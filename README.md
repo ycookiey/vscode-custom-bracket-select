@@ -5,7 +5,7 @@
 > This fork (`ycookiey.bracket-select3`) is created to continue maintenance.
 
 This is a simple plugin that support to quick select text between matched brackets.
-This plugin supports `()`, `{}`, `[]`,`""`, `''`, and ``` `` ``` by default. You can customize supported brackets and quotes in settings.
+This plugin supports `()`, `{}`, `[]`, `<>`,`“”`,`""`, `''`, and ``` `` ``` by default. You can customize supported brackets and quotes in settings.
 
 Really hope this plugin can help you!
 
@@ -39,7 +39,7 @@ Example configuration to add angle brackets `<>`:
     ["(", ")"],
     ["{", "}"],
     ["[", "]"],
-    ["<", ">"]
+    ["<", ">"],
+    ["“", "”"]
 ]
 ```
-
