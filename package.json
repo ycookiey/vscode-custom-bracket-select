@@ -1,8 +1,8 @@
 {
     "name": "custom-bracket-select",
     "displayName": "Custom Bracket Select",
-    "description": "Quick select code between brackets, support for (), {}, [], '' and \"\" (Fork of jhasse.bracket-select2)",
-    "version": "2.2.0",
+    "description": "Quick select code between brackets, support for (), {}, [], '' and \"\", with multi-character bracket support (e.g., <!--, {{, /*). (Fork of jhasse.bracket-select2)",
+    "version": "2.3.0",
     "publisher": "ycookiey",
     "icon": "icon.png",
     "engines": {
@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/ycookiey/vscode-bracket-select.git"
+        "url": "https://github.com/ycookiey/vscode-custom-bracket-select.git"
     },
     "categories": [
         "Other"

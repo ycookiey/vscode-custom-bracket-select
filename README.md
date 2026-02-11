@@ -2,7 +2,12 @@
 
 > [!NOTE]
 > This is a fork of [jhasse.bracket-select2](https://marketplace.visualstudio.com/items?itemName=jhasse.bracket-select2), which was a fork of [chunsen.bracket-select](https://marketplace.visualstudio.com/items?itemName=chunsen.bracket-select).
-> This fork (`ycookiey.bracket-select3`) is created to continue maintenance.
+> This fork is created to continue maintenance.
+
+> [!TIP]
+> **What's new in this fork:**
+> - **Multi-character bracket support** (v2.3.0) - `<!-- -->`, `/* */`, `${ }` and more
+> - **Customizable brackets and quotes** (v2.2.0) - Configure via settings
 
 This is a simple plugin that support to quick select text between matched brackets.
 This plugin supports `()`, `{}`, `[]`,`""`, `''`, and ``` `` ``` by default. You can customize supported brackets and quotes in settings.
@@ -32,14 +37,17 @@ This extension contributes the following settings:
 * `bracket-select.brackets`: Array of bracket pairs to support.
 * `bracket-select.quotes`: Array of quote characters to support.
 
-Example configuration to add angle brackets `<>`:
+Example configuration:
 
 ```json
 "bracket-select.brackets": [
     ["(", ")"],
     ["{", "}"],
     ["[", "]"],
-    ["<", ">"]
+    ["<", ">"],
+    ["<!--", "-->"],
+    ["/*", "*/"],
+    ["${", "}"]
 ]
 ```
 

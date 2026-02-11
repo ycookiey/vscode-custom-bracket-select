@@ -7,58 +7,91 @@ import { bracketUtil } from './bracketUtil';
 class SearchResult {
     bracket: string;
     offset: number;
+    length: number;
 
-    constructor(bracket: string, offset: number) {
+    constructor(bracket: string, offset: number, length: number = 1) {
         this.bracket = bracket;
         this.offset = offset;
+        this.length = length;
     }
 }
 
 function findBackward(text: string, index: number): SearchResult {
     const bracketStack: string[] = [];
-    for (let i = index; i >= 0; i--) {
-        let char = text.charAt(i);
-        // if it's a quote, we can not infer it is a open or close one
-        //so just return, this is for the case current selection is inside a string;
-        if (bracketUtil.isQuoteBracket(char) && bracketStack.length == 0) {
-            return new SearchResult(char, i);
+    let i = index;
+
+    while (i >= 0) {
+        // クォートチェック（マルチ文字対応）
+        let quoteMatch = bracketUtil.matchQuote(text, i);
+        if (quoteMatch && bracketStack.length == 0) {
+            return new SearchResult(quoteMatch.bracket, i, quoteMatch.length);
         }
-        if (bracketUtil.isOpenBracket(char)) {
+
+        // 開き括弧チェック（マルチ文字対応、最長マッチ優先）
+        let openMatch = bracketUtil.matchOpenBracket(text, i);
+        if (openMatch) {
             if (bracketStack.length == 0) {
-                return new SearchResult(char, i);
+                return new SearchResult(openMatch.bracket, i, openMatch.length);
             } else {
                 let top = bracketStack.pop();
-                if (!bracketUtil.isMatch(char, top)) {
+                if (!bracketUtil.isMatch(openMatch.bracket, top)) {
                     throw 'Unmatched bracket pair';
                 }
             }
-        } else if (bracketUtil.isCloseBracket(char)) {
-            bracketStack.push(char);
+            i -= openMatch.length;
+            continue;
         }
+
+        // 閉じ括弧チェック（マルチ文字対応、最長マッチ優先）
+        let closeMatch = bracketUtil.matchCloseBracket(text, i);
+        if (closeMatch) {
+            bracketStack.push(closeMatch.bracket);
+            i -= closeMatch.length;
+            continue;
+        }
+
+        // マッチしない場合は1文字進む
+        i--;
     }
-    //we are geting to the edge
     return null;
 }
 
 function findForward(text: string, index: number): SearchResult {
     const bracketStack: string[] = [];
-    for (let i = index; i < text.length; i++) {
-        let char = text.charAt(i);
-        if (bracketUtil.isQuoteBracket(char) && bracketStack.length == 0) {
-            return new SearchResult(char, i);
+    let i = index;
+
+    while (i < text.length) {
+        // クォートチェック（マルチ文字対応）
+        let quoteMatch = bracketUtil.matchQuote(text, i);
+        if (quoteMatch && bracketStack.length == 0) {
+            return new SearchResult(quoteMatch.bracket, i, quoteMatch.length);
         }
-        if (bracketUtil.isCloseBracket(char)) {
+
+        // 閉じ括弧チェック（マルチ文字対応、最長マッチ優先）
+        let closeMatch = bracketUtil.matchCloseBracket(text, i);
+        if (closeMatch) {
             if (bracketStack.length == 0) {
-                return new SearchResult(char, i);
+                return new SearchResult(closeMatch.bracket, i, closeMatch.length);
             } else {
                 let top = bracketStack.pop();
-                if (!bracketUtil.isMatch(top, char)) {
-                    throw 'Unmatched bracket pair'
+                if (!bracketUtil.isMatch(top, closeMatch.bracket)) {
+                    throw 'Unmatched bracket pair';
                 }
             }
-        } else if (bracketUtil.isOpenBracket(char)) {
-            bracketStack.push(char);
+            i += closeMatch.length;
+            continue;
         }
+
+        // 開き括弧チェック（マルチ文字対応、最長マッチ優先）
+        let openMatch = bracketUtil.matchOpenBracket(text, i);
+        if (openMatch) {
+            bracketStack.push(openMatch.bracket);
+            i += openMatch.length;
+            continue;
+        }
+
+        // マッチしない場合は1文字進む
+        i++;
     }
     return null;
 }
@@ -113,12 +146,12 @@ function selectText(includeBrack: boolean, selection: vscode.Selection): { start
     while (forwardResult != null
         && !isMatch(backwardResult, forwardResult)
         && bracketUtil.isQuoteBracket(forwardResult.bracket)) {
-        forwardResult = findForward(searchContext.text, forwardResult.offset + 1);
+        forwardResult = findForward(searchContext.text, forwardResult.offset + forwardResult.length);
     }
     while (backwardResult != null
         && !isMatch(backwardResult, forwardResult)
         && bracketUtil.isQuoteBracket(backwardResult.bracket)) {
-        backwardResult = findBackward(searchContext.text, backwardResult.offset - 1);
+        backwardResult = findBackward(searchContext.text, backwardResult.offset - backwardResult.length);
     }
 
     if (!isMatch(backwardResult, forwardResult)) {
@@ -128,12 +161,12 @@ function selectText(includeBrack: boolean, selection: vscode.Selection): { start
     // we are next to a bracket
     // this is the case for doule press select
     if (backwardStarter == backwardResult.offset && forwardResult.offset == forwardStarter) {
-        selectionStart = backwardStarter - 1;
-        selectionEnd = forwardStarter + 1;
+        selectionStart = backwardStarter - backwardResult.length;
+        selectionEnd = forwardStarter + forwardResult.length;
     } else {
         if (includeBrack) {
-            selectionStart = backwardResult.offset - 1;
-            selectionEnd = forwardResult.offset + 1;
+            selectionStart = backwardResult.offset - backwardResult.length;
+            selectionEnd = forwardResult.offset + forwardResult.length;
         } else {
             selectionStart = backwardResult.offset;
             selectionEnd = forwardResult.offset;

@@ -5,5 +5,19 @@
     },
     "search.exclude": {
         "out": true // set this to false to include "out" folder in search results
-    }
+    },
+
+    // マルチ文字括弧のテスト設定
+    "bracket-select.brackets": [
+        // 既存の1文字括弧
+        ["(", ")"],
+        ["{", "}"],
+        ["[", "]"],
+
+        // マルチ文字括弧（追加）
+        ["<!--", "-->"],  // HTMLコメント
+        ["{{", "}}"],      // テンプレート構文（Handlebars、Vue、など）
+        ["/*", "*/"],      // ブロックコメント
+        ["${", "}"]        // テンプレートリテラル
+    ]
 }
