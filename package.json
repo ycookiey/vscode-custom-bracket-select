@@ -1,6 +1,6 @@
 {
-    "name": "custom-bracket-select",
-    "displayName": "Custom Bracket Select",
+    "name": "bracket-select-custom",
+    "displayName": "Bracket Select Custom",
     "description": "Quick select code between brackets, support for (), {}, [], '' and \"\", with multi-character bracket support (e.g., <!--, {{, /*). (Fork of jhasse.bracket-select2)",
     "version": "2.3.0",
     "publisher": "ycookiey",
