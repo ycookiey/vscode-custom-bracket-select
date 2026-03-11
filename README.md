@@ -10,7 +10,7 @@
 > - **Customizable brackets and quotes** (v2.2.0) - Configure via settings
 
 This is a simple plugin that support to quick select text between matched brackets.
-This plugin supports `()`, `{}`, `[]`,`""`, `''`, and ``` `` ``` by default. You can customize supported brackets and quotes in settings.
+This plugin supports `()`, `{}`, `[]`, `<>`,`“”`,`""`, `''`, and ``` `` ``` by default. You can customize supported brackets and quotes in settings.
 
 Really hope this plugin can help you!
 
@@ -45,9 +45,9 @@ Example configuration:
     ["{", "}"],
     ["[", "]"],
     ["<", ">"],
+    ["“", "”"]
     ["<!--", "-->"],
     ["/*", "*/"],
     ["${", "}"]
 ]
 ```
-
