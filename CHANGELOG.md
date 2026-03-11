@@ -17,3 +17,13 @@
 ## [2.1.0]
 - Remove undo (use `ctrl+u` instead)
 - Set extensionKind to "ui", so that it runs locally even when using the remote extension
+
+## [2.2.0]
+- Add settings to customize supported brackets and quotes
+- Add `bracket-select.brackets` setting
+- Add `bracket-select.quotes` setting
+
+## [2.3.0]
+- Add support for multi-character brackets (e.g., `<!-- -->`, `/* */`, `${ }`)
+- Improve bracket matching with longest-match-first algorithm
+- Update repository URL to vscode-custom-bracket-select
