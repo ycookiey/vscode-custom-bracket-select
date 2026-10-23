@@ -1,9 +1,10 @@
 {
     "name": "bracket-select-custom",
     "displayName": "Bracket Select Custom",
-    "description": "Quick select code between brackets, support for (), {}, [], '' and \"\", with multi-character bracket support (e.g., <!--, {{, /*). (Fork of jhasse.bracket-select2)",
+    "description": "Select the text between matching brackets or quotes, and expand the selection outward on each press. The brackets and quotes are configurable. Fork of jhasse.bracket-select2.",
     "version": "2.3.0",
     "publisher": "ycookiey",
+    "license": "MIT",
     "icon": "icon.png",
     "engines": {
         "vscode": "^1.34.0"
@@ -14,6 +15,14 @@
     },
     "categories": [
         "Other"
+    ],
+    "keywords": [
+        "bracket",
+        "brackets",
+        "quotes",
+        "select",
+        "selection",
+        "expand selection"
     ],
     "activationEvents": [
         "onCommand:bracket-select.select",

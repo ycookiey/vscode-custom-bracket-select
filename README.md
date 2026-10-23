@@ -1,53 +1,55 @@
-# Custom Bracket Select
+# Bracket Select Custom
 
-> [!NOTE]
-> This is a fork of [jhasse.bracket-select2](https://marketplace.visualstudio.com/items?itemName=jhasse.bracket-select2), which was a fork of [chunsen.bracket-select](https://marketplace.visualstudio.com/items?itemName=chunsen.bracket-select).
-> This fork is created to continue maintenance.
+A VS Code extension that selects the text between matching brackets or quotes: `()`, `{}`, `[]`, `""`, `''` and ``` `` ``` by default, configurable in the settings. Press the shortcut again to expand the selection outward. Works with multiple cursors.
 
-> [!TIP]
-> **What's new in this fork:**
-> - **Multi-character bracket support** (v2.3.0) - `<!-- -->`, `/* */`, `${ }` and more
-> - **Customizable brackets and quotes** (v2.2.0) - Configure via settings
+Forked from [jhasse.bracket-select2](https://marketplace.visualstudio.com/items?itemName=jhasse.bracket-select2), itself a fork of [chunsen.bracket-select](https://marketplace.visualstudio.com/items?itemName=chunsen.bracket-select). This fork adds the settings for the brackets and quotes to match.
 
-This is a simple plugin that support to quick select text between matched brackets.
-This plugin supports `()`, `{}`, `[]`,`""`, `''`, and ``` `` ``` by default. You can customize supported brackets and quotes in settings.
+## Installation
 
-Really hope this plugin can help you!
+Install [Bracket Select Custom](https://marketplace.visualstudio.com/items?itemName=ycookiey.bracket-select-custom) from the Marketplace, or run `code --install-extension ycookiey.bracket-select-custom`. To uninstall, use the Extensions view.
 
+## Usage
 
-## Quick start
-Just run command `BraSel:Select` or type `alt+a` to select text between brackets. If you wish to select more, just press it again.
+| Command | Selects | Windows / Linux | macOS |
+| --- | --- | --- | --- |
+| `BraSel:Select` | The text between the brackets. Pressing again selects the brackets too, then the contents of the enclosing pair | <kbd>Alt</kbd>+<kbd>A</kbd> | <kbd>Option</kbd>+<kbd>A</kbd> |
+| `BraSel:SelectInclude` | The text including the brackets | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>A</kbd> | <kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>A</kbd> |
 
-If you slected more than you want, at anytime, just press <kbd>Ctrl</kbd>+<kbd>U</kbd> (Cursor Undo), you will bring the previous selections back.
+To go back to the previous selection, run VS Code's Cursor Undo (<kbd>Ctrl</kbd>+<kbd>U</kbd>, or <kbd>Cmd</kbd>+<kbd>U</kbd> on macOS).
 
-![bracket-select-animation](bracket-select-undo.gif)
-  
-If you wish to select text including the brackets, just run `BraSel:Select Include Brackets` or type `cmd+alt+a` on mac and `ctrl+alt+a` on windows.
+![Selecting more and going back with Cursor Undo](bracket-select-undo.gif)
 
-This plugin also works for **multiple cursors**:
-![bracket-select-animation](bracket-select.gif)
+![Selecting with multiple cursors](bracket-select.gif)
 
-## Requirements
-None
+## Settings
 
-## Extension Settings
+- `bracket-select.brackets`: the bracket pairs to match. Default: `[["(", ")"], ["{", "}"], ["[", "]"]]`
+- `bracket-select.quotes`: the quote characters to match. Default: ``["\"", "'", "`"]``
 
-This extension contributes the following settings:
-
-* `bracket-select.brackets`: Array of bracket pairs to support.
-* `bracket-select.quotes`: Array of quote characters to support.
-
-Example configuration:
+A setting replaces its default list. For example, to also match angle brackets and to stop matching backticks:
 
 ```json
-"bracket-select.brackets": [
-    ["(", ")"],
-    ["{", "}"],
-    ["[", "]"],
-    ["<", ">"],
-    ["<!--", "-->"],
-    ["/*", "*/"],
-    ["${", "}"]
-]
+"bracket-select.brackets": [["(", ")"], ["{", "}"], ["[", "]"], ["<", ">"]],
+"bracket-select.quotes": ["\"", "'"]
 ```
 
+## Known limitations
+
+- Brackets inside strings and comments count like any other bracket, which can give a wrong selection or none
+- With `<` and `>` as brackets, comparison operators such as `a > b` count as brackets too
+- Use brackets and quotes of one character. Longer ones such as `<!--` and `-->` give a wrong selection or none
+
+## Build
+
+With Node.js 22 or later:
+
+```sh
+npm ci
+npx @vscode/vsce package
+```
+
+This compiles the extension and writes `bracket-select-custom-<version>.vsix`, which `code --install-extension <file>` installs.
+
+## License
+
+[MIT](LICENSE.txt)
