@@ -6,7 +6,7 @@ Forked from [jhasse.bracket-select2](https://marketplace.visualstudio.com/items?
 
 ## Installation
 
-Install [Bracket Select Custom](https://marketplace.visualstudio.com/items?itemName=ycookiey.bracket-select-custom) from the Marketplace, or run `code --install-extension ycookiey.bracket-select-custom`. To uninstall, use the Extensions view.
+Install [Bracket Select Custom](https://marketplace.visualstudio.com/items?itemName=ycookiey.bracket-select-custom) from the Marketplace, or run `code --install-extension ycookiey.bracket-select-custom`.
 
 ## Usage
 
