@@ -11,19 +11,18 @@ export namespace bracketUtil {
         return config.get('quotes', ['"', "'", "`"]);
     }
 
-    // 長さでソートされた括弧リストを取得（最長優先）
+    // Longest first, so that a bracket such as `{{` matches before `{`
     function getSortedBrackets(): string[][] {
         const brackets = getBrackets();
         return brackets.sort((a, b) => b[0].length - a[0].length);
     }
 
-    // 長さでソートされたクォートリストを取得（最長優先）
+    // Longest first, for the same reason as getSortedBrackets
     function getSortedQuotes(): string[] {
         const quotes = getQuotes();
         return quotes.sort((a, b) => b.length - a.length);
     }
 
-    // 指定位置から最長マッチする開き括弧を検出
     export function matchOpenBracket(text: string, index: number): { bracket: string, length: number } | null {
         const sortedBrackets = getSortedBrackets();
         for (const [open, close] of sortedBrackets) {
@@ -35,7 +34,6 @@ export namespace bracketUtil {
         return null;
     }
 
-    // 指定位置から最長マッチする閉じ括弧を検出
     export function matchCloseBracket(text: string, index: number): { bracket: string, length: number } | null {
         const sortedBrackets = getSortedBrackets();
         for (const [open, close] of sortedBrackets) {
@@ -47,7 +45,6 @@ export namespace bracketUtil {
         return null;
     }
 
-    // クォートのマッチング（マルチ文字対応）
     export function matchQuote(text: string, index: number): { bracket: string, length: number } | null {
         const sortedQuotes = getSortedQuotes();
         for (const quote of sortedQuotes) {
@@ -64,14 +61,6 @@ export namespace bracketUtil {
             return open === close;
         }
         return getBrackets().findIndex(p => p[0] === open && p[1] === close) >= 0;
-    }
-
-    export function isOpenBracket(char: string): Boolean {
-        return matchOpenBracket(char, 0) !== null;
-    }
-
-    export function isCloseBracket(char: string): Boolean {
-        return matchCloseBracket(char, 0) !== null;
     }
 
     export function isQuoteBracket(char: string): Boolean {

@@ -1,6 +1,4 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { bracketUtil } from './bracketUtil';
 
@@ -21,13 +19,11 @@ function findBackward(text: string, index: number): SearchResult {
     let i = index;
 
     while (i >= 0) {
-        // クォートチェック（マルチ文字対応）
         let quoteMatch = bracketUtil.matchQuote(text, i);
         if (quoteMatch && bracketStack.length == 0) {
             return new SearchResult(quoteMatch.bracket, i, quoteMatch.length);
         }
 
-        // 開き括弧チェック（マルチ文字対応、最長マッチ優先）
         let openMatch = bracketUtil.matchOpenBracket(text, i);
         if (openMatch) {
             if (bracketStack.length == 0) {
@@ -42,7 +38,6 @@ function findBackward(text: string, index: number): SearchResult {
             continue;
         }
 
-        // 閉じ括弧チェック（マルチ文字対応、最長マッチ優先）
         let closeMatch = bracketUtil.matchCloseBracket(text, i);
         if (closeMatch) {
             bracketStack.push(closeMatch.bracket);
@@ -50,7 +45,6 @@ function findBackward(text: string, index: number): SearchResult {
             continue;
         }
 
-        // マッチしない場合は1文字進む
         i--;
     }
     return null;
@@ -61,13 +55,11 @@ function findForward(text: string, index: number): SearchResult {
     let i = index;
 
     while (i < text.length) {
-        // クォートチェック（マルチ文字対応）
         let quoteMatch = bracketUtil.matchQuote(text, i);
         if (quoteMatch && bracketStack.length == 0) {
             return new SearchResult(quoteMatch.bracket, i, quoteMatch.length);
         }
 
-        // 閉じ括弧チェック（マルチ文字対応、最長マッチ優先）
         let closeMatch = bracketUtil.matchCloseBracket(text, i);
         if (closeMatch) {
             if (bracketStack.length == 0) {
@@ -82,7 +74,6 @@ function findForward(text: string, index: number): SearchResult {
             continue;
         }
 
-        // 開き括弧チェック（マルチ文字対応、最長マッチ優先）
         let openMatch = bracketUtil.matchOpenBracket(text, i);
         if (openMatch) {
             bracketStack.push(openMatch.bracket);
@@ -90,7 +81,6 @@ function findForward(text: string, index: number): SearchResult {
             continue;
         }
 
-        // マッチしない場合は1文字進む
         i++;
     }
     return null;
@@ -105,7 +95,7 @@ function getSearchContext(selection: vscode.Selection) {
     let selectionStart = editor.document.offsetAt(selection.start);
     let selectionEnd = editor.document.offsetAt(selection.end);
     return {
-        backwardStarter: selectionStart - 1, //coverage vscode selection index to text index
+        backwardStarter: selectionStart - 1, // convert the VS Code selection index to a text index
         forwardStarter: selectionEnd,
         text: editor.document.getText()
     }
@@ -114,7 +104,7 @@ function getSearchContext(selection: vscode.Selection) {
 function toVscodeSelection({ start, end }: { start: number, end: number }): vscode.Selection {
     const editor = vscode.window.activeTextEditor;
     return new vscode.Selection(
-        editor.document.positionAt(start + 1), //convert text index to vs selection index
+        editor.document.positionAt(start + 1), // convert the text index to a VS Code selection index
         editor.document.positionAt(end)
     );
 }
@@ -158,8 +148,8 @@ function selectText(includeBrack: boolean, selection: vscode.Selection): { start
         showInfo('No matched bracket pairs found')
         return;
     }
-    // we are next to a bracket
-    // this is the case for doule press select
+    // The selection already touches the brackets, as after a previous press,
+    // so take the brackets too
     if (backwardStarter == backwardResult.offset && forwardResult.offset == forwardStarter) {
         selectionStart = backwardStarter - backwardResult.length;
         selectionEnd = forwardStarter + forwardResult.length;
@@ -178,8 +168,6 @@ function selectText(includeBrack: boolean, selection: vscode.Selection): { start
     }
 }
 
-
-//Main extension point
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('bracket-select.select', function () {
@@ -191,6 +179,5 @@ export function activate(context: vscode.ExtensionContext) {
     );
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {
 }
