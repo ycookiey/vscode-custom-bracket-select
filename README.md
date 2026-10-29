@@ -1,6 +1,9 @@
 # Bracket Select Custom
 
-> This is a fork of [jhasse.bracket-select2](https://marketplace.visualstudio.com/items?itemName=jhasse.bracket-select2), which is itself a fork of [chunsen.bracket-select](https://marketplace.visualstudio.com/items?itemName=chunsen.bracket-select). This fork adds settings for the brackets and quotes to match.
+> This is a fork of [jhasse.bracket-select2](https://marketplace.visualstudio.com/items?itemName=jhasse.bracket-select2), which is itself a fork of [chunsen.bracket-select](https://marketplace.visualstudio.com/items?itemName=chunsen.bracket-select).
+>
+> **What's new in this fork:**
+> - **Customizable brackets and quotes** (v2.2.0) - choose them with the [Extension Settings](#extension-settings)
 
 A simple extension that quickly selects the text between matching brackets or quotes.
 It supports `()`, `{}`, `[]`, `""`, `''` and ``` `` ``` by default, and you can change the brackets and quotes in the settings.
